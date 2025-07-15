@@ -1,0 +1,21 @@
+# Ignore node_modules
+node_modules
+
+# Build output
+dist
+coverage
+
+# Env files
+.env
+.env.*
+
+# Prisma database file (if using SQLite for dev)
+prisma/dev.db
+
+# Logs
+*.log
+
+# Migrations can be excluded if you want (opcjonalnie)
+# prisma/migrations
+
+# Swagger/OpenAPI gen files (jeśli generujesz

@@ -10,4 +10,17 @@ export class UserService {
       users: [],
     };
   }
+
+  async findByEmail(email: string) {
+    return this.prisma.user.findUnique({
+      where: { email },
+    });
+  }
+
+  async updateRefreshToken(id: number, refreshToken: string) {
+    return this.prisma.user.update({
+      where: { id },
+      data: { refreshToken },
+    });
+  }
 }

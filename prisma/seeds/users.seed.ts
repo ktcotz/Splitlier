@@ -1,17 +1,20 @@
-import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { PrismaService } from './../../src/prisma/prisma.service';
 
-export default async function seedUsers(prisma: PrismaClient) {
-  const password = await bcrypt.hash('password123', 10);
+export default async function seedUsers(prisma: PrismaService) {
+  const passwordHash = await bcrypt.hash('MySecretPass123!', 10);
 
-  await prisma.user.upsert({
-    where: { email: 'test@splittly.pl' },
-    update: {},
-    create: {
-      email: 'test@splittly.pl',
-      password,
-    },
+  await prisma.user.createMany({
+    data: [
+      {
+        email: 'alice.doe@example.com',
+        password: passwordHash,
+      },
+      {
+        email: 'bob.smith@example.com',
+        password: passwordHash,
+      },
+    ],
+    skipDuplicates: true,
   });
-
-  console.log('👤 Seed: test user created');
 }

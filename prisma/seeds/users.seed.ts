@@ -9,10 +9,12 @@ export default async function seedUsers(prisma: PrismaService) {
       {
         email: 'alice.doe@example.com',
         password: passwordHash,
+        firstName: 'Alice',
       },
       {
         email: 'bob.smith@example.com',
         password: passwordHash,
+        firstName: 'Bob',
       },
     ],
     skipDuplicates: true,

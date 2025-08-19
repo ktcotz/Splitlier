@@ -9,7 +9,11 @@ import { envSchema } from './env.schema';
       isGlobal: true,
       load: [
         () => {
-          const env = dotenv.config().parsed ?? {};
+          const env =
+            dotenv.config({
+              path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+            }).parsed ?? {};
+
           const result = envSchema.safeParse(env);
 
           if (!result.success) {

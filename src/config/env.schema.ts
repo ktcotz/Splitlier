@@ -5,7 +5,7 @@ export const envSchema = z.object({
   DATABASE_URL: z.string(),
   JWT_ACCESS_SECRET: z.string(),
   JWT_REFRESH_SECRET: z.string(),
-  NODE_ENV: z.string(),
+  NODE_ENV: z.literal(['development', 'production', 'test']),
 });
 
 export type EnvVars = z.infer<typeof envSchema>;

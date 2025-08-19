@@ -1,4 +1,4 @@
-import { Given, When, Then } from '@cucumber/cucumber';
+import { Given, When, Then, DataTable } from '@cucumber/cucumber';
 import { CustomWorld, HTTPMethods } from '../support/custom-world';
 
 Given('the API is running', async function (this: CustomWorld) {
@@ -22,7 +22,7 @@ When(
     endpoint: string,
     docString: string,
   ) {
-    let body: Record<string, any> | undefined;
+    let body: Record<string, string> | undefined = undefined;
     if (docString) {
       try {
         body = JSON.parse(docString);
@@ -35,18 +35,14 @@ When(
   },
 );
 
-When(
-  'I send a {string} request to {string} with body and headers:',
-  async function (
-    this: CustomWorld,
-    method: HTTPMethods,
-    endpoint: string,
-    dataTable: any,
-  ) {
-    const { body, headers } = JSON.parse(dataTable);
-    await this.sendRequest(method, endpoint, body, headers);
-  },
-);
+When('I set headers:', function (this: CustomWorld, dataTable: DataTable) {
+  const headers: Record<string, string> = {};
+
+  dataTable.rows().forEach(([key, value]: string[]) => {
+    headers[key] = value;
+  });
+  this.setHeaders(headers);
+});
 
 Then(
   'the response status code should be {int}',

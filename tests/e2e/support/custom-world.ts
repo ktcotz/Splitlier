@@ -1,25 +1,27 @@
 import { setWorldConstructor, World, IWorldOptions } from '@cucumber/cucumber';
 import { INestApplication } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 import * as request from 'supertest';
 import { Response } from 'supertest';
-
-const prisma = new PrismaClient();
 
 export type HTTPMethods = 'GET' | 'POST' | 'DELETE' | 'PUT' | 'PATCH';
 
 export class CustomWorld extends World {
   app?: INestApplication;
   response?: Response;
+  headers: Record<string, string> = {};
 
   constructor(options: IWorldOptions) {
     super(options);
   }
 
+  setHeaders(headers: Record<string, string>) {
+    this.headers = { ...this.headers, ...headers };
+  }
+
   async sendRequest(
     method: HTTPMethods,
     endpoint: string,
-    body?: Record<string, any>,
+    body?: Record<string, string>,
     headers?: Record<string, string>,
   ) {
     if (!this.app) throw new Error('App is not running');
@@ -58,5 +60,3 @@ export class CustomWorld extends World {
 }
 
 setWorldConstructor(CustomWorld);
-
-export { prisma };
